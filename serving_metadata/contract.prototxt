@@ -1,0 +1,45 @@
+signatures {
+  signature_name: "detect"
+  inputs {
+    field_name: "image_b64"
+    info {
+      dtype: DT_STRING
+    }
+  }
+  outputs {
+    field_name: "bboxes"
+    info {
+      dtype: DT_DOUBLE
+      tensor_shape: {
+        dim: {
+            size: -1
+        }
+        dim: {
+            size: 4
+        }
+      }
+    }
+  }
+  outputs {
+    field_name: "scores"
+    info {
+      dtype: DT_DOUBLE
+      tensor_shape: {
+        dim: {
+            size: -1
+        }
+      }
+    }
+  }
+  outputs {
+    field_name: "classes"
+    info {
+      dtype: DT_STRING
+      tensor_shape: {
+        dim: {
+            size: -1
+        }
+      }
+    }
+  }
+}

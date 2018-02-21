@@ -1,0 +1,3 @@
+model:
+  name: "fat_ssd_example"
+  type: "python:3.6"
