@@ -1,13 +1,12 @@
 import tensorflow as tf
 import matplotlib.image as mpimg
-import numpy as np
 
 import base64
 import io
 
-from nets import ssd_vgg_300, ssd_common, np_methods
-from preprocessing import ssd_vgg_preprocessing
+from nets import ssd_vgg_300, np_methods
 
+import hydro_serving_grpc as hs
 
 # POSTPROCESSING PARAMS
 
@@ -94,4 +93,37 @@ class SSDServer:
         rbboxes = np_methods.bboxes_resize(rbbox_img, rbboxes)
 
         rclasses = list(map(lambda c: SSDServer.VOC_MAP.get(c, "NA"), rclasses))
-        return rclasses, rscores, rbboxes
+
+        class_arr = [bytes(x, "utf-8") for x in rclasses]
+        classes_tensor = hs.TensorProto(
+            dtype=hs.DT_STRING,
+            tensor_shape=hs.TensorShapeProto(
+                dim=[
+                    hs.TensorShapeProto.Dim(size=-1)
+                ]
+            ),
+            string_val=class_arr
+        )
+
+        scores_tensor = hs.TensorProto(
+            dtype=hs.DT_DOUBLE,
+            tensor_shape=hs.TensorShapeProto(
+                dim=[
+                    hs.TensorShapeProto.Dim(size=-1)
+                ]
+            ),
+            double_val=rscores
+        )
+
+        bboxes_tensor = hs.TensorProto(
+            dtype=hs.DT_DOUBLE,
+            tensor_shape=hs.TensorShapeProto(
+                dim=[
+                    hs.TensorShapeProto.Dim(size=-1),
+                    hs.TensorShapeProto.Dim(size=4)
+                ]
+            ),
+            double_val=rbboxes.flatten()
+        )
+
+        return classes_tensor, scores_tensor, bboxes_tensor

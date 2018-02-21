@@ -46,7 +46,10 @@ class SSDSpecs(unittest.TestCase):
         print(rscores)
         print(rbboxes)
 
-        self.assertSetEqual(set(rclasses), {"dog", "person"})
+        result_classes = [x.decode("utf-8") for x in rclasses.string_val]
+
+        self.assertEqual(rclasses.dtype, hs.DT_STRING)
+        self.assertSetEqual(set(result_classes), {"dog", "person"})
 
 
 if __name__ == "__main__":
