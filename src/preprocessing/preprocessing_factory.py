@@ -24,7 +24,7 @@ import tensorflow as tf
 # from preprocessing import inception_preprocessing
 # from preprocessing import vgg_preprocessing
 
-from preprocessing import ssd_vgg_preprocessing
+from src.preprocessing import ssd_vgg_preprocessing
 
 slim = tf.contrib.slim
 

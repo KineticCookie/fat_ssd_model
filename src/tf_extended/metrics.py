@@ -17,12 +17,10 @@
 import tensorflow as tf
 import numpy as np
 
-from tensorflow.contrib.framework.python.ops import variables as contrib_variables
 from tensorflow.python.framework import dtypes
 from tensorflow.python.framework import ops
 from tensorflow.python.ops import array_ops
 from tensorflow.python.ops import math_ops
-from tensorflow.python.ops import nn
 from tensorflow.python.ops import state_ops
 from tensorflow.python.ops import variable_scope
 from tensorflow.python.ops import variables

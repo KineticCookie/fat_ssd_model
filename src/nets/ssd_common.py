@@ -14,7 +14,6 @@
 # ==============================================================================
 """Shared function between different SSD implementations.
 """
-import numpy as np
 import tensorflow as tf
 import tf_extended as tfe
 

@@ -1,5 +1,5 @@
 import unittest
-from ssd_server import SSDServer
+from src.ssd_server import SSDServer
 import base64
 import hydro_serving_grpc as hs
 from google.protobuf import text_format
@@ -15,7 +15,7 @@ class SSDSpecs(unittest.TestCase):
 
     def test_model(self):
         ssd = SSDServer.initialize("model", "serving_default")
-        with open("test_pic.jpg", "rb") as image_file:
+        with open("test/test_pic.jpg", "rb") as image_file:
             encoded_string = base64.b64encode(image_file.read())
         pix_mat = ssd.preprocess(encoded_string)
 

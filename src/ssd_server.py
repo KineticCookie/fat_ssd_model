@@ -4,9 +4,11 @@ import matplotlib.image as mpimg
 import base64
 import io
 
-from nets import ssd_vgg_300, np_methods
+from nets import ssd_vgg_300
+from nets import np_methods
 
 import hydro_serving_grpc as hs
+
 
 # POSTPROCESSING PARAMS
 
@@ -50,7 +52,7 @@ class SSDServer:
         self.outputs = outputs
 
     @staticmethod
-    def initialize(model_path: str, signature_name: str):
+    def initialize(model_path, signature_name):
         session = tf.Session()
         meta_graph = tf.saved_model.loader.load(session, [tf.saved_model.tag_constants.SERVING], model_path)
 
@@ -65,13 +67,32 @@ class SSDServer:
 
         return SSDServer(session, inputs, outputs)
 
-    def preprocess(self, b64_string: str):
+    def preprocess(self, b64_string):
         decoded = base64.b64decode(b64_string)
         jpeg_image = io.BytesIO(decoded)
         return mpimg.imread(jpeg_image, format='JPG')
 
     def run(self, pic_matrix):
-        return self.session.run(self.outputs, feed_dict={self.inputs["img_input"]: pic_matrix})
+        outputs = self.session.run(self.outputs, feed_dict={self.inputs["img_input"]: pic_matrix})
+        rpredictions = [
+            outputs['ssd_300_vgg/softmax/Reshape_1:0'],
+            outputs['ssd_300_vgg/softmax_1/Reshape_1:0'],
+            outputs['ssd_300_vgg/softmax_2/Reshape_1:0'],
+            outputs['ssd_300_vgg/softmax_3/Reshape_1:0'],
+            outputs['ssd_300_vgg/softmax_4/Reshape_1:0'],
+            outputs['ssd_300_vgg/softmax_5/Reshape_1:0']
+        ]
+        rlocalisations = [
+            outputs['ssd_300_vgg/block4_box/Reshape:0'],
+            outputs['ssd_300_vgg/block7_box/Reshape:0'],
+            outputs['ssd_300_vgg/block8_box/Reshape:0'],
+            outputs['ssd_300_vgg/block9_box/Reshape:0'],
+            outputs['ssd_300_vgg/block10_box/Reshape:0'],
+            outputs['ssd_300_vgg/block11_box/Reshape:0']
+        ]
+        rbbox_img = outputs['bbox_img']
+
+        return rpredictions, rlocalisations, rbbox_img
 
     def postprocess(self, rpredictions, rlocalisations, rbbox_img):
         rclasses, rscores, rbboxes = np_methods.ssd_bboxes_select(

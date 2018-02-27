@@ -1,0 +1,4 @@
+tensorflow==1.4.1
+hydro-serving-grpc==0.0.11
+matplotlib==2.0.2
+Pillow==4.1.1

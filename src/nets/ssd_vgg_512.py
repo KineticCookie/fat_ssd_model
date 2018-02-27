@@ -35,9 +35,7 @@ import numpy as np
 import tensorflow as tf
 
 import tf_extended as tfe
-from nets import custom_layers
-from nets import ssd_common
-from nets import ssd_vgg_300
+from nets import custom_layers, ssd_common, ssd_vgg_300
 
 slim = tf.contrib.slim
 

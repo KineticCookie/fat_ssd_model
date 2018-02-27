@@ -1,0 +1,15 @@
+model:
+  name: "fat_ssd_example"
+  type: "python:3.6"
+  contract: "contract.prototxt"
+  payload:
+    - "src/"
+    - "requirements.txt"
+    - "model/"
+
+local_deploy:
+  name: "example_server"
+  runtime:
+    repository: "hydrosphere/serving-runtime-python"
+    tag: "3.6-latest"
+  port: 6969

@@ -22,11 +22,8 @@ import tensorflow as tf
 # from nets import overfeat
 # from nets import resnet_v1
 # from nets import resnet_v2
-from nets import vgg
+from nets import vgg, ssd_vgg_300, ssd_vgg_512
 # from nets import xception
-
-from nets import ssd_vgg_300
-from nets import ssd_vgg_512
 
 slim = tf.contrib.slim
 
