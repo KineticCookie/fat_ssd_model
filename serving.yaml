@@ -1,6 +1,6 @@
 model:
   name: "fat_ssd_example"
-  type: "python:3.6"
+  type: "unknown:ssd_demo"
   contract: "contract.prototxt"
   payload:
     - "src/"
