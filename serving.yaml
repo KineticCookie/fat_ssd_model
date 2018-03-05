@@ -1,5 +1,5 @@
 model:
-  name: "fat_ssd_example"
+  name: "ssd_model_example"
   type: "unknown:ssd_demo"
   contract: "contract.prototxt"
   payload:
